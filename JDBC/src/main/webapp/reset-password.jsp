@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Đăng Ký</title>
+<title>Reset Mật Khẩu</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <style>
@@ -48,6 +48,22 @@
     }
     .input-group input:focus {
         outline: none;
+    }
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+    .form-options label {
+        color: #333;
+    }
+    .form-options a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .form-options a:hover {
+        text-decoration: underline;
     }
     .btn-login {
         width: 100%;
@@ -95,8 +111,8 @@
 </head>
 <body>
     <div class="login-container">
-        <form action="register" method="post">
-            <h2>Đăng Ký Tài Khoản</h2>
+        <form action="reset-password" method="post">
+            <h2>Reset Mật Khẩu</h2>
 
             <c:if test="${alert != null}">
                 <div class="alert">${alert}</div>
@@ -105,36 +121,32 @@
                 <div class="success">${success}</div>
             </c:if>
 
-            <!-- Username -->
-            <div class="input-group">
-                <span><i class="fa fa-user"></i></span>
-                <input type="text" name="username" placeholder="Tên đăng nhập" required>
-            </div>
+            <c:if test="${token != null}">
+                <input type="hidden" name="token" value="${token}">
 
-            <!-- Email -->
-            <div class="input-group">
-                <span><i class="fa fa-envelope"></i></span>
-                <input type="email" name="email" placeholder="Email" required>
-            </div>
+                <!-- OTP -->
+                <div class="input-group">
+                    <span><i class="fa fa-lock"></i></span>
+                    <input type="text" name="otp" placeholder="Nhập mã OTP" required>
+                </div>
 
-            <!-- Password -->
-            <div class="input-group">
-                <span><i class="fa fa-lock"></i></span>
-                <input type="password" name="password" placeholder="Mật khẩu" required>
-            </div>
+                <!-- New Password -->
+                <div class="input-group">
+                    <span><i class="fa fa-lock"></i></span>
+                    <input type="password" name="newPassword" placeholder="Mật Khẩu Mới" required minlength="6">
+                </div>
 
-            <!-- Full Name -->
-            <div class="input-group">
-                <span><i class="fa fa-user"></i></span>
-                <input type="text" name="fullname" placeholder="Họ và tên" required>
-            </div>
+                <!-- Confirm Password -->
+                <div class="input-group">
+                    <span><i class="fa fa-lock"></i></span>
+                    <input type="password" name="confirmPassword" placeholder="Xác Nhận Mật Khẩu" required>
+                </div>
 
-            <!-- Submit button -->
-            <button type="submit" class="btn-login">Đăng Ký</button>
+                <button type="submit" class="btn-login">Reset Mật Khẩu</button>
+            </c:if>
 
-            <!-- Back to login link -->
             <div class="register-link">
-                Đã có tài khoản? <a href="login">Đăng Nhập</a>
+                Quay lại <a href="login">Đăng Nhập</a>
             </div>
         </form>
     </div>

@@ -1,6 +1,7 @@
 package JDBC.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -11,6 +12,43 @@ public class User implements Serializable {
 	private String passWord;
 	private String avatar;
 	private String phone;
+	private int roleid;
+	private Date createdDate;
+
+	public int getRoleid() {
+		return roleid;
+	}
+
+	public void setRoleid(int roleid) {
+		this.roleid = roleid;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getResetToken() {
+		return resetToken;
+	}
+
+	public void setResetToken(String resetToken) {
+		this.resetToken = resetToken;
+	}
+
+	public Date getResetExpiry() {
+		return resetExpiry;
+	}
+
+	public void setResetExpiry(Date resetExpiry) {
+		this.resetExpiry = resetExpiry;
+	}
+
+	private String resetToken;
+    private Date resetExpiry;
 
 	public User(String email, String userName, String fullName, String passWord, String avatar, String phone) {
 		super();

@@ -1,6 +1,7 @@
 package JDBC.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -114,4 +115,76 @@ public class UserDaoImpl implements userdao{
 		}
 		return duplicate;
 		}
+
+// Các phương thức cũ giữ nguyên
+
+    @Override
+    public boolean updateResetToken(String email, String token, Date expiry, String otp) {
+        String combinedToken = token + ":" + otp;  // Kết hợp token và OTP
+        String sql = "UPDATE [User] SET reset_token = ?, reset_expiry = ? WHERE email = ?";
+        try {
+            conn = new DBConnection().getConnectionW();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, combinedToken);
+            ps.setDate(2, (java.sql.Date) expiry);
+            ps.setString(3, email);
+            int rows = ps.executeUpdate();
+            ps.close();
+            conn.close();
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updatePasswordByToken(String token, String newPassword) {
+        String sql = "UPDATE [User] SET password = ?, reset_token = NULL, reset_expiry = NULL WHERE reset_token LIKE ?";
+        try {
+            conn = new DBConnection().getConnectionW();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, newPassword);  // Khuyến nghị hash bằng BCrypt
+            ps.setString(2, token + ":%");  // Tìm token bất kể OTP
+            int rows = ps.executeUpdate();
+            ps.close();
+            conn.close();
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public User findByResetToken(String token) {
+        String sql = "SELECT * FROM [User] WHERE reset_token LIKE ?";
+        try {
+            conn = new DBConnection().getConnectionW();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, token + ":%");  // Tìm token bất kể OTP
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
+                user.setUserName(rs.getString("username"));
+                user.setFullName(rs.getString("fullname"));
+                user.setPassWord(rs.getString("password"));
+                user.setAvatar(rs.getString("avatar"));
+                user.setRoleid(rs.getInt("roleid"));
+                user.setPhone(rs.getString("phone"));
+                user.setCreatedDate(rs.getDate("createddate"));
+                user.setResetToken(rs.getString("reset_token"));
+                user.setResetExpiry(rs.getDate("reset_expiry"));
+                rs.close();
+                ps.close();
+                conn.close();
+                return user;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
