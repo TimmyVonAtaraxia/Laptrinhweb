@@ -125,7 +125,7 @@
             <!-- Remember me + Forgot password -->
             <div class="form-options">
                 <label><input type="checkbox" name="remember"> Nhớ tôi</label>
-                <a href="#">Quên mật khẩu?</a>
+                <a href="forgot-password.jsp">Quên mật khẩu?</a>
             </div>
 
             <!-- Submit button -->

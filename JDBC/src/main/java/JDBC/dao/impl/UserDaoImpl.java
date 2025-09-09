@@ -157,6 +157,48 @@ public class UserDaoImpl implements userdao{
     }
 
     @Override
+    public void updatePasswordByEmail(String email, String newPassword) {
+        String sql = "UPDATE [User] SET password = ? WHERE email = ?";
+        try {
+            conn = new DBConnection().getConnectionW();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, newPassword);
+            ps.setString(2, email);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public boolean updatePassword(String email, String newPassword) {
+        String sql = "UPDATE [User] SET password = ? WHERE email = ?";
+        try {
+            conn = new DBConnection().getConnectionW();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, newPassword); // Khuyến nghị hash trước khi lưu
+            ps.setString(2, email);
+            int rows = ps.executeUpdate();
+            ps.close();
+            conn.close();
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+
+
     public User findByResetToken(String token) {
         String sql = "SELECT * FROM [User] WHERE reset_token LIKE ?";
         try {

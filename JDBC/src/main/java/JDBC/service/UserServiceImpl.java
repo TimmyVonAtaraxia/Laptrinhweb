@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 		userdao.insert(user);
 	}
 	// Implement mới
-    @Override
+/*    @Override
     public String requestPasswordReset(String email) {
         if (!userdao.checkExistEmail(email)) {
             return null;  // Email không tồn tại
@@ -97,6 +97,20 @@ public class UserServiceImpl implements UserService {
             return new Date().before(user.getResetExpiry());
         }
         return false;
+    }
+
+    @Override
+    public boolean updatePasswordByEmail(String email, String newPassword) {
+        if (!this.checkExistEmail(email)) {
+            return false; // Email không tồn tại
+        }
+        userdao.updatePasswordByEmail(email, newPassword);
+        return true;
+    }
+    */
+    @Override
+    public boolean updatePassword(String email, String newPassword) {
+        return userdao.updatePassword(email, newPassword); // Gọi DAO để cập nhật
     }
 
 }

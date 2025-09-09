@@ -12,15 +12,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/forgot-password"})
-public class ForgotPasswordController extends HttpServlet{
-	@Override
+@WebServlet("/forgot-password")
+public class ForgotPasswordController extends HttpServlet {
+    private UserService userService = new UserServiceImpl(); // Giả sử đã có UserService
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session != null && session.getAttribute("account") != null) {
-            resp.sendRedirect(req.getContextPath() + "/waiting");
-            return;
-        }
         req.getRequestDispatcher("/forgot-password.jsp").forward(req, resp);
     }
 
@@ -39,16 +36,15 @@ public class ForgotPasswordController extends HttpServlet{
             return;
         }
 
-        UserService service = new UserServiceImpl();
-        String otp = service.requestPasswordReset(email);
-        if (otp != null) {
-            req.setAttribute("otp", otp);  // Hiển thị OTP trên form
-            req.setAttribute("success", "Vui lòng nhập mã OTP sau để reset mật khẩu.");
-            req.setAttribute("email", email);  // Lưu email để dùng lại
+        // Kiểm tra email tồn tại trong database
+        if (userService.checkExistEmail(email)) {
+            // Chuyển hướng đến reset-password.jsp với email
+            req.setAttribute("email", email);
+            req.getRequestDispatcher("/reset-password.jsp").forward(req, resp);
         } else {
-            alertMsg = "Email không tồn tại hoặc lỗi hệ thống";
+            alertMsg = "Email không tồn tại trong hệ thống";
             req.setAttribute("alert", alertMsg);
+            req.getRequestDispatcher("/forgot-password.jsp").forward(req, resp);
         }
-        req.getRequestDispatcher("/forgot-password.jsp").forward(req, resp);
     }
 }

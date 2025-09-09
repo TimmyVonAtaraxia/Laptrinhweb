@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <title>Quên Mật Khẩu</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -49,22 +48,6 @@
     .input-group input:focus {
         outline: none;
     }
-    .form-options {
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
-        margin-bottom: 15px;
-    }
-    .form-options label {
-        color: #333;
-    }
-    .form-options a {
-        color: #007bff;
-        text-decoration: none;
-    }
-    .form-options a:hover {
-        text-decoration: underline;
-    }
     .btn-login {
         width: 100%;
         padding: 10px;
@@ -99,53 +82,28 @@
         margin-bottom: 15px;
         border-radius: 3px;
     }
-    .success {
-        padding: 10px;
-        color: white;
-        background: #2ecc71;
-        text-align: center;
-        margin-bottom: 15px;
-        border-radius: 3px;
-    }
-    .otp-display {
-        text-align: center;
-        margin-bottom: 15px;
-        color: #333;
-        font-weight: bold;
-    }
 </style>
 </head>
 <body>
     <div class="login-container">
         <form action="forgot-password" method="post">
             <h2>Quên Mật Khẩu</h2>
-
             <c:if test="${alert != null}">
                 <div class="alert">${alert}</div>
             </c:if>
             <c:if test="${success != null}">
-                <div class="success">${success}</div>
-                <c:if test="${otp != null}">
-                    <div class="otp-display">Mã OTP của bạn: <c:out value="${otp}" /></div>
-                    <input type="hidden" name="email" value="${email}">
-                    <div class="input-group">
-                        <span><i class="fa fa-lock"></i></span>
-                        <input type="text" name="otpInput" placeholder="Nhập mã OTP" required>
-                    </div>
-                    <button type="submit" class="btn-login">Xác nhận OTP</button>
-                </c:if>
+                <div class="alert" style="background: #2ecc71">${success}</div>
             </c:if>
-
-            <c:if test="${otp == null}">
-                <div class="input-group">
-                    <span><i class="fa fa-envelope"></i></span>
-                    <input type="email" name="email" placeholder="Email" required>
-                </div>
-                <button type="submit" class="btn-login">Lấy Mã OTP</button>
-            </c:if>
-
+            <!-- Email input -->
+            <div class="input-group">
+                <span><i class="fa fa-envelope"></i></span>
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+            <!-- Submit button -->
+            <button type="submit" class="btn-login">Tiếp Tục</button>
+            <!-- Back to login link -->
             <div class="register-link">
-                Quay lại <a href="login">Đăng Nhập</a>
+                <a href="login">Quay lại Đăng Nhập</a>
             </div>
         </form>
     </div>

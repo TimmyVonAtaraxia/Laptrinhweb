@@ -13,5 +13,6 @@ public interface userdao {
 	boolean updateResetToken(String email, String token, Date expiry, String otp);  // Thêm OTP
     boolean updatePasswordByToken(String token, String newPassword);   // Giữ nguyên
     User findByResetToken(String token);  // Giữ nguyên
-
+    void updatePasswordByEmail(String email, String newPassword);
+    boolean updatePassword(String email, String newPassword);
 }
